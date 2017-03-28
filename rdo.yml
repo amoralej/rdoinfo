@@ -13,6 +13,9 @@ releases:
       url: http://mirror.centos.org/centos/7/updates/x86_64/
     - name: CentOS 7 Extras
       url: http://mirror.centos.org/centos/7/extras/x86_64/
+  cbs-tags:
+  - cloud7-openstack-pike-candidate
+  - cloud7-openstack-pike-testing
 - name: ocata
   branch: ocata-rdo
   repos:
@@ -27,6 +30,10 @@ releases:
       url: http://mirror.centos.org/centos/7/updates/x86_64/
     - name: CentOS 7 Extras
       url: http://mirror.centos.org/centos/7/extras/x86_64/
+  cbs-tags:
+  - cloud7-openstack-ocata-candidate
+  - cloud7-openstack-ocata-testing
+  - cloud7-openstack-ocata-release
 - name: newton
   branch: newton-rdo
   repos:
@@ -41,6 +48,10 @@ releases:
       url: http://mirror.centos.org/centos/7/updates/x86_64/
     - name: CentOS 7 Extras
       url: http://mirror.centos.org/centos/7/extras/x86_64/
+  cbs-tags:
+  - cloud7-openstack-newton-candidate
+  - cloud7-openstack-newton-testing
+  - cloud7-openstack-newton-release
 - name: mitaka
   branch: mitaka-rdo
   repos:
@@ -76,6 +87,10 @@ releases:
   repos:
   - name: el7
     buildsys: cbs/cloud7-openstack-common-el7
+  cbs-tags:
+  - cloud7-openstack-common-candidate
+  - cloud7-openstack-common-testing
+  - cloud7-openstack-common-release
 
 
 # default template for 'packages' infromation bellow
@@ -159,10 +174,28 @@ package-configs:
       pike:
       ocata:
       newton:
+  rpmfactory-dummy:
+     # This is a dummy conf for packages not being entirely managed
+     # in review.r.o but using cbs-tags for automatic tagging
+     # A rpmfactory-dep can be used for dependencies entirely managed
+     # using review.r.o with proper values
+     distgit:
+     patches:
+     master-distgit:
+     review-patches:
+     review-origin:
+     tags:
+     maintainers:
+     - amoralej@redhat.com
 packages:
 # OpenStack Puppet Modules
 - project: puppet-aodh
   conf: rpmfactory-puppet
+  cbs-tags:
+    cloud7-openstack-ocata-testing: puppet-aodh-10.4.0-1.el7
+    cloud7-openstack-ocata-release: puppet-aodh-10.3.0-1.el7
+    cloud7-openstack-newton-testing: puppet-aodh-9.5.0-1.el7
+    cloud7-openstack-newton-release: puppet-aodh-9.5.0-1.el7
 - project: puppet-barbican
   conf: rpmfactory-puppet
 - project: puppet-ceilometer
@@ -2795,3 +2828,12 @@ packages:
     #pike-uc:
   maintainers:
   - mrunge@redhat.com
+- project: python-sphinx
+  # This is only an example of a dep using cbs-tags for automatic
+  # tagging
+  name: python-sphinx
+  conf: rpmfactory-dummy
+  upstream: https://github.com/sphinx-doc/sphinx
+  cbs-tags:
+    cloud7-openstack-common-testing: python-sphinx-1.2.3-5.el7
+    cloud7-openstack-common-release: python-sphinx-1.2.3-5.el7
